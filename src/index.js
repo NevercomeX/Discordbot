@@ -4,7 +4,7 @@ const { Client, Intents } = require("discord.js");
 
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-const { customStatus } = require("./config.json");
+const { customStatus } = require("./config/config.json");
 
 const env = process.env;
 const APIKEY = env.API_KEY;
@@ -73,7 +73,7 @@ async function getOldRateFromDB() {
 	return oldRate;
 }
 
-async function insertOldRate(pool, oldRate) {
+async function insertOldRate(oldRate) {
 	const sql = `INSERT INTO rates (rate) SELECT ${oldRate} WHERE NOT EXISTS (SELECT * FROM rates)`;
 	pool.query(sql, (err, result) => {
 		if (err) throw err;
@@ -123,7 +123,7 @@ async function updateRatePrice() {
 			: diff < 0
 			? "( ↘ )"
 			: "( = )";
-	const activityName = `$ ${newRate} ${arrow} `;
+	const activityName = `${newRate} ${arrow} `;
 
 	if (oldRate === null) {
 		console.log("No old rate found. Creating new entry in the database...");
