@@ -120,9 +120,7 @@ async function updateRatePrice() {
 			? "( ↓ )"
 			: diff > 0
 			? "( ↗ )"
-			: diff < 0
-			? "( ↘ )"
-			: "( = )";
+			: "( ↘ )";
 	const activityName = `${newRate} ${arrow} `;
 
 	if (oldRate === null) {
@@ -178,7 +176,7 @@ function getCoingecko() {
 	}
 
 	// Call setBot() every 5 seconds
-	setInterval(setBot, 50000);
+	setInterval(setBot, 300000);
 
 	bot
 		.login(DISCORDKEY)
