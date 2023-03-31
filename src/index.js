@@ -147,9 +147,9 @@ function getCoingecko() {
 			bot.guilds.cache.each((guild) => guildMeCache.push(guild));
 
 			console.log(`Logged in as ${bot.user.tag}!`);
-
+			const currentDate = new Date().toLocaleString();
 			if (customStatus != "") {
-				bot.user.setActivity(customStatus, { type: "WATCHING" });
+				bot.user.setActivity(currentDate, { type: "WATCHING" });
 			} else {
 				bot.user.setActivity(`Discord.gg/Eternull`, { type: "WATCHING" });
 			}
