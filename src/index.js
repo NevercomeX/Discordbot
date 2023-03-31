@@ -7,10 +7,8 @@ const bot = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const { customStatus } = require("./config/config.json");
 
 const env = process.env;
-const APIKEY = env.API_KEY;
 const APIURL = env.API_URL;
 const DISCORDKEY = env.DISCORD_TOKEN_ID;
-var timer;
 
 function showLoading() {
 	const frames = ["-", "\\", "|", "/"];
@@ -140,20 +138,27 @@ async function updateRatePrice() {
 	return activityName;
 }
 
+function setCurrentdate() {
+	const now = new Date().toLocaleString("en-US", {
+		timeZone: "America/Bogota",
+		hour12: true,
+		hour: "numeric",
+		minute: "numeric",
+		second: "numeric",
+	});
+	if (customStatus != "") {
+		bot.user.setActivity(now, { type: "WATCHING" });
+	} else {
+		bot.user.setActivity(`Discord.gg/Eternull`, { type: "WATCHING" });
+	}
+}
+
 function getCoingecko() {
 	let guildMeCache = [];
 	if (DISCORDKEY != "") {
 		bot.on("ready", () => {
 			bot.guilds.cache.each((guild) => guildMeCache.push(guild));
-
 			console.log(`Logged in as ${bot.user.tag}!`);
-			const currentDate = new Date().toLocaleString();
-			if (customStatus != "") {
-				bot.user.setActivity(currentDate, { type: "WATCHING" });
-			} else {
-				bot.user.setActivity(`Discord.gg/Eternull`, { type: "WATCHING" });
-			}
-
 			setBot();
 		});
 	} else {
@@ -164,6 +169,7 @@ function getCoingecko() {
 
 	async function setBot() {
 		const rate = await updateRatePrice();
+		setCurrentdate();
 		for (let i = 0; i < guildMeCache.length; i++) {
 			guildMeCache[i].me
 				.setNickname(`${rate}`)
